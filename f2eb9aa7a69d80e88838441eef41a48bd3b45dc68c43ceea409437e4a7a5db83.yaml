@@ -3,7 +3,7 @@ www.ilportaledellautomobilista.it:
   "/":
     JSESSIONID: !ruby/object:Mechanize::Cookie
       name: JSESSIONID
-      value: it2aGLfBrkOrYAPhN8qmut-I.epopbe04
+      value: Wp-Nno3CwOFsntapSryNjY6E.epopbe04
       domain: www.ilportaledellautomobilista.it
       for_domain: false
       path: "/"
@@ -11,7 +11,7 @@ www.ilportaledellautomobilista.it:
       httponly: false
       expires: 
       max_age: 
-      created_at: &1 2019-10-24 18:46:48.883917000 +01:00
+      created_at: &1 2019-10-24 18:54:53.477416000 +01:00
       accessed_at: *1
     GUEST_LANGUAGE_ID: !ruby/object:Mechanize::Cookie
       name: GUEST_LANGUAGE_ID
@@ -21,9 +21,9 @@ www.ilportaledellautomobilista.it:
       path: "/"
       secure: false
       httponly: false
-      expires: Fri, 23 Oct 2020 17:46:50 GMT
+      expires: Fri, 23 Oct 2020 17:54:54 GMT
       max_age: 
-      created_at: &2 2019-10-24 18:46:48.884641000 +01:00
+      created_at: &2 2019-10-24 18:54:53.478082000 +01:00
       accessed_at: *2
     COOKIE_SUPPORT: !ruby/object:Mechanize::Cookie
       name: COOKIE_SUPPORT
@@ -33,7 +33,7 @@ www.ilportaledellautomobilista.it:
       path: "/"
       secure: false
       httponly: false
-      expires: Fri, 23 Oct 2020 17:46:50 GMT
+      expires: Fri, 23 Oct 2020 17:54:54 GMT
       max_age: 
-      created_at: &3 2019-10-24 18:46:48.884768000 +01:00
+      created_at: &3 2019-10-24 18:54:53.478243000 +01:00
       accessed_at: *3
