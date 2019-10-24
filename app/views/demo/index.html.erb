@@ -1,0 +1,59 @@
+<form id="form" method="post" action="/rca">
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <select name="tipoVeicolo">
+            <option value="">Selezionare Tipo veicolo</option>
+            <option selected="selected" value="A">Autoveicolo</option>
+            <option value="M">Motoveicolo</option>
+            <option value="R">Rimorchio</option>
+            <option value="">---Macchine Operatrici---</option>
+            <option value="N">Macch. Oper. Trainata</option>
+            <option value="P">Macch. Oper. Semovente</option>
+            <option value="U">Macch. Agr. Semovente 1 asse</option>
+            <option value="X">Macch. Agr. Oper. Trainata</option>
+            <option value="Y">Rimorchio Agr. Massa &lt; 1,5 t.</option>
+            <option value="">---Macchine Agricole---</option>
+            <option value="S">Macch. Agr. Semovente 2 assi</option>
+            <option value="T">Rimorchio Agricolo</option>
+            <option value="V">Macch. Agr. Operatrice</option>
+            <option value="">---Targhe di Prova---</option>
+            <option value="E">Autoveicolo e Rimorchio</option>
+            <option value="F">Motoveicolo e Ciclomotore</option>
+            <option value="G">Macchina Agricola</option>
+            <option value="H">Macchina Operatrice</option>
+            <option value="">---Targhe Diplomatiche---</option>
+            <option value="CD">Corpo Diplomatico</option>
+            <option value="CC">Corpo Consolare</option>
+            <option value="EE">Escursionisti Esteri</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input name="targa" placeholder="Targa" value="ds724mt">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img src="" id="captcha">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input name="captcha">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input name="ricercaCoperturaVeicolo" type="button" value="Ricerca" id="search">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+<div id="response"></div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<%= javascript_include_tag 'captcha' %>
