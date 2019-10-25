@@ -31,31 +31,14 @@ Serviziauto::App.controllers  do
       'captcha' => params['captcha'],
       'ricercaCoperturaVeicolo' => 'Ricerca'
     })
+
+    k = page.search('table#listMovimenti thead tr th').map{ |th| th.text.downcase.gsub(/\W/, '_') }
+    v = page.search('table#listMovimenti tbody tr td').map{ |th| th.text }
     
     {
-      response: page.search('table#listMovimenti').to_s,
+      response: Hash[k.zip(v)],
       status: :ok
     }.to_json
   end
-  
-  # get :index, :map => '/foo/bar' do
-  #   session[:foo] = 'bar'
-  #   render 'index'
-  # end
-
-  # get :sample, :map => '/sample/url', :provides => [:any, :js] do
-  #   case content_type
-  #     when :js then ...
-  #     else ...
-  # end
-
-  # get :foo, :with => :id do
-  #   "Maps to url '/foo/#{params[:id]}'"
-  # end
-
-  # get '/example' do
-  #   'Hello world!'
-  # end
-  
 
 end
