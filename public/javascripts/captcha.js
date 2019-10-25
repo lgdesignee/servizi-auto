@@ -6,7 +6,7 @@ $(function() {
 
   $('#form').on('submit', function(e) {
     var form = $('#form').serializeArray()
-    $.post('rca', form, function(r) {
+    $.post('/rca', form, function(r) {
       $('#response').html(r.response)
     })
     e.preventDefault()
