@@ -23,6 +23,9 @@ Serviziauto::App.controllers  do
   end
 
   post :rca, provides: :json, csrf_protection: false do
+    status = :ok
+    response = nil
+
     agent = Mechanize.new
     agent.cookie_jar.load("#{session[:session_id]}.yaml")
     page = agent.post(FORM_URL, {
@@ -31,13 +34,21 @@ Serviziauto::App.controllers  do
       'captcha' => params['captcha'],
       'ricercaCoperturaVeicolo' => 'Ricerca'
     })
+    message = page.search('#elenco-1 .errore-desc').text
+    message = page.search('#elenco-1 .messaggio p').text if message.empty?
 
-    k = page.search('table#listMovimenti thead tr th').map{ |th| th.text.downcase.gsub(/\W/, '_') }
-    v = page.search('table#listMovimenti tbody tr td').map{ |th| th.text }
+    if message.empty?
+      k = page.search('table#listMovimenti thead tr th').map{ |th| th.text.downcase.gsub(/\W/, '_') }
+      v = page.search('table#listMovimenti tbody tr td').map{ |th| th.text }
+      response = Hash[k.zip(v)]
+    else
+      status = :ko
+      response = { message: message.strip }
+    end
     
     {
-      response: Hash[k.zip(v)],
-      status: :ok
+      response: response,
+      status: status
     }.to_json
   end
 
