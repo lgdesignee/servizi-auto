@@ -13,7 +13,7 @@ Serviziauto::App.controllers  do
 
   get :captcha, provides: :json do
     agent = Mechanize.new
-    captcha = Base64.encode64(agent.get(CAPTCHA_URL), referer: "https://www.ilportaledellautomobilista.it/web/portale-automobilista/verifica-copertura-rc?p_p_id=CoperturaRC_WAR_ServiziAlCittadinowar100SNAPSHOTesercizio&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=_118_INSTANCE_hoIzOCy6I6vu__column-2&p_p_col_count=1&_CoperturaRC_WAR_ServiziAlCittadinowar100SNAPSHOTesercizio_action=sceltaTipologia").content
+    captcha = Base64.encode64 agent.get(CAPTCHA_URL).content
     agent.cookie_jar.save_as("#{session[:session_id]}.yaml", session: true)
 
     {
