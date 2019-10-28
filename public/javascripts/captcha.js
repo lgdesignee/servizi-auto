@@ -1,12 +1,9 @@
 $(function() {
-  $.get('/captcha', function(r) {
-    $('#captcha').attr('src', r.src)
-    $('#loading, #form').toggle()
-  })
+  $('#service').on('change', loadCaptcha)
 
   $('#form').on('submit', function(e) {
     var form = $('#form').serializeArray()
-    $.post('/rca', form, function(r) {
+    $.post('/' + getService() + '/result', form, function(r) {
       if ( r.status == 'ok' ) {
         html = '<table>'
         $.each(r.response, function(k, v) {
@@ -21,4 +18,21 @@ $(function() {
     })
     e.preventDefault()
   })
+
+  loadCaptcha()
 })
+
+function getService() {
+  return $('#service').val()
+}
+
+function loadCaptcha() {
+  $('#loading').show()
+  $('#form').hide()
+  $('#response').html('')
+
+  $.get('/' + getService() + '/captcha', function(r) {
+    $('#captcha').attr('src', r.src)
+    $('#loading, #form').toggle()
+  })
+}
