@@ -1,5 +1,5 @@
 Serviziauto::App.controllers :rca do
-
+  enable :sessions
   set :protect_from_csrf, :except => [/result/]
 
   get :captcha, provides: :json do
