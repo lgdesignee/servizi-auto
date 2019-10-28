@@ -16,7 +16,8 @@ class ScrapeHelper
 
     {
       src: "data:image/jpeg;base64,#{captcha}",
-      status: :ok
+      status: :ok,
+      token: session[:session_id]
     }.to_json
   end
 
