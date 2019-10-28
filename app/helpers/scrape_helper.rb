@@ -12,20 +12,22 @@ class ScrapeHelper
   def self.captcha(service, session)
     agent = Mechanize.new
     captcha = Base64.encode64 agent.get(URLS[service][:captcha]).content
-    agent.cookie_jar.save_as("sessions/#{session[:session_id]}.yaml", session: true)
+    token = session[:session_id]
+    agent.cookie_jar.save_as("sessions/#{token}.yaml", session: true)
 
     {
       src: "data:image/jpeg;base64,#{captcha}",
+      token: token,
       status: :ok
     }.to_json
   end
 
-  def self.post(service, session, params)
+  def self.post(service, params)
     status = :ok
     response = nil
 
     agent = Mechanize.new
-    agent.cookie_jar.load("sessions/#{session[:session_id]}.yaml")
+    agent.cookie_jar.load("sessions/#{params[:token]}.yaml")
     page = agent.post(URLS[service][:form], {
       'tipoVeicolo' => params['tipoVeicolo'],
       'targa' => params['targa'],

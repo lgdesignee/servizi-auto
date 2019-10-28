@@ -1,9 +1,10 @@
+var base_url = '/'
 $(function() {
   $('#service').on('change', loadCaptcha)
 
   $('#form').on('submit', function(e) {
     var form = $('#form').serializeArray()
-    $.post('/' + getService() + '/result', form, function(r) {
+    $.post(base_url + getService() + '/result', form, function(r) {
       if ( r.status == 'ok' ) {
         html = '<table>'
         $.each(r.response, function(k, v) {
@@ -31,8 +32,9 @@ function loadCaptcha() {
   $('#form').hide()
   $('#response').html('')
 
-  $.get('/' + getService() + '/captcha', function(r) {
+  $.get(base_url + getService() + '/captcha', function(r) {
     $('#captcha').attr('src', r.src)
+    $('#token').val(r.token)
     $('#loading, #form').toggle()
   })
 }

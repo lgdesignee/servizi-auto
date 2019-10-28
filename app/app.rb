@@ -6,7 +6,7 @@ module Serviziauto
 
     use Rack::Cors do
       allow do
-        origins 'www.infoanas.it'
+        origins '*'
         resource '*', :headers => :any, :methods => [:get, :post, :options]
       end
     end
