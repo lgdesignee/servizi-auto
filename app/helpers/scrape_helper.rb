@@ -22,33 +22,35 @@ class ScrapeHelper
   end
 
   def self.post(service:, session:, params:)
-    puts "hello its #{session[:session_id]}"
-    status = :ok
-    response = nil
 
-    agent = Mechanize.new
-    agent.cookie_jar.load("sessions/#{session[:session_id]}.yaml")
-    page = agent.post(URLS[service][:form], {
-      'tipoVeicolo' => params['tipoVeicolo'],
-      'targa' => params['targa'],
-      'captcha' => params['captcha'],
-      'ricercaCoperturaVeicolo' => 'Ricerca'
-    })
-    message = page.search('#elenco-1 .errore-desc').text
-    message = page.search('#elenco-1 .messaggio p').text if message.empty?
+    session.to_json
+    # puts "hello its #{session[:session_id]}"
+    # status = :ok
+    # response = nil
 
-    if message.empty?
-      k = page.search('table#listMovimenti thead tr th').map{ |th| th.text }
-      v = page.search('table#listMovimenti tbody tr td').map{ |th| th.text }
-      response = Hash[k.zip(v)]
-    else
-      status = :ko
-      response = { message: message.strip }
-    end
+    # agent = Mechanize.new
+    # agent.cookie_jar.load("sessions/#{session[:session_id]}.yaml")
+    # page = agent.post(URLS[service][:form], {
+    #   'tipoVeicolo' => params['tipoVeicolo'],
+    #   'targa' => params['targa'],
+    #   'captcha' => params['captcha'],
+    #   'ricercaCoperturaVeicolo' => 'Ricerca'
+    # })
+    # message = page.search('#elenco-1 .errore-desc').text
+    # message = page.search('#elenco-1 .messaggio p').text if message.empty?
+
+    # if message.empty?
+    #   k = page.search('table#listMovimenti thead tr th').map{ |th| th.text }
+    #   v = page.search('table#listMovimenti tbody tr td').map{ |th| th.text }
+    #   response = Hash[k.zip(v)]
+    # else
+    #   status = :ko
+    #   response = { message: message.strip }
+    # end
     
-    {
-      response: response,
-      status: status
-    }.to_json
+    # {
+    #   response: response,
+    #   status: status
+    # }.to_json
   end
 end
