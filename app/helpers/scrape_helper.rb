@@ -23,7 +23,7 @@ class ScrapeHelper
 
   def self.post(service:, session:, params:)
 
-    session.to_json
+    { token: session[:session_id] }.to_json
     # puts "hello its #{session[:session_id]}"
     # status = :ok
     # response = nil
