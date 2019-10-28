@@ -22,6 +22,7 @@ class ScrapeHelper
   end
 
   def self.post(service:, session:, params:)
+    puts "hello its #{session[:session_id]}"
     status = :ok
     response = nil
 
