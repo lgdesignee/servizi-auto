@@ -6,7 +6,7 @@ Serviziauto::App.controllers :rev do
   end
 
   post :result, provides: :json, csrf_protection: false do
-    ScrapeHelper.post(:rev, session, params)
+    ScrapeHelper.post(:rev, params)
   end
 
 end
