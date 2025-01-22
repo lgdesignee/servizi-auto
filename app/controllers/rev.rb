@@ -8,5 +8,4 @@ Serviziauto::App.controllers :rev do
   post :result, provides: :json, csrf_protection: false do
     ScrapeHelper.post(:rev, params)
   end
-
 end
