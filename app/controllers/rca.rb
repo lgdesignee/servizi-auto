@@ -8,5 +8,4 @@ Serviziauto::App.controllers :rca do
   post :result, provides: :json do
     ScrapeHelper.post(:rca, params)
   end
-
 end
