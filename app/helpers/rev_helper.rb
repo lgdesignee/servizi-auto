@@ -39,7 +39,13 @@ class RevHelper
         req.headers['guid'] = guid
       end
 
-      message = JSON.parse(response.body)['informations']
+      info = JSON.parse(response.body)['informations']
+      message = info.map do
+        {
+          'Data': it['datRvs'],
+          'KM': it['numKmiPcsRvs'],
+        }
+      end
     end
     
     { response: { message: }, status: }.to_json
