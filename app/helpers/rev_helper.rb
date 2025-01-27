@@ -40,9 +40,10 @@ class RevHelper
       end
 
       info = JSON.parse(resp.body)['informations'].first
-      response =  {
-          'Data': info['datRvs'],
-          'KM': info['numKmiPcsRvs'],
+      response = {
+          'Targa': params['targa'],
+          'Data': Date.parse(info['datRvs']).strftime('%d/%m/%Y'),
+          'KM': info['numKmiPcsRvs'].to_s.reverse.gsub(/(\d{3})(?=\d)/, '\1.').reverse
         }
     end
     
