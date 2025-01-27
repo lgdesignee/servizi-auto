@@ -21,7 +21,7 @@ class RevHelper
     status = :ok
     conn = Faraday.new(BASE_URL)
 
-    response = conn.post(URLS[:verify]) do |req|
+    resp = conn.post(URLS[:verify]) do |req|
       req.headers['Content-Type'] = 'application/json'
       req.body = {
         id: params['token'],
@@ -29,25 +29,23 @@ class RevHelper
       }.to_json
     end
 
-    guid = JSON.parse(response.body)['guid']
+    guid = JSON.parse(resp.body)['guid']
     
     if guid.nil?
       status = :ko
-      message = "Errore captcha non valido"
+      response = { message: "Errore captcha non valido" }
     else
-      response = conn.get(BASE_URL + URLS[:api] + "/#{params['tipoVeicolo']}/#{params['targa']}") do |req|
+      resp = conn.get(BASE_URL + URLS[:api] + "/#{params['tipoVeicolo']}/#{params['targa']}") do |req|
         req.headers['guid'] = guid
       end
 
-      info = JSON.parse(response.body)['informations']
-      message = info.map do
-        {
-          'Data': it['datRvs'],
-          'KM': it['numKmiPcsRvs'],
+      info = JSON.parse(resp.body)['informations'].first
+      response =  {
+          'Data': info['datRvs'],
+          'KM': info['numKmiPcsRvs'],
         }
-      end
     end
     
-    { response: { message: }, status: }.to_json
+    { response:, status: }.to_json
   end
 end
