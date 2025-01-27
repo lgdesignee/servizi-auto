@@ -1,13 +1,14 @@
 class RevHelper
+  BASE_URL = 'https://www.ilportaledellautomobilista.it'
   URLS = {
-    captcha: 'https://www.ilportaledellautomobilista.it/interrogazionistoricorevisioni/noauth/captcha/generate',
-    verify: 'https://www.ilportaledellautomobilista.it/interrogazionistoricorevisioni/noauth/captcha/verify',
-    api: 'https://www.ilportaledellautomobilista.it/interrogazionistoricorevisioni/api/v1/storicorevisioni/A/GA985CW'
+    captcha: '/interrogazionistoricorevisioni/noauth/captcha/generate',
+    verify: '/interrogazionistoricorevisioni/noauth/captcha/verify',
+    api: '/interrogazionistoricorevisioni/api/v1/storicorevisioni'
   }
   
   def self.captcha(service, session)
     agent = Mechanize.new
-    response = JSON.parse(agent.post(URLS[:captcha]).body)
+    response = JSON.parse(agent.post(BASE_URL + URLS[:captcha]).body)
 
     {
       src: "data:image/jpeg;base64,#{response['image']}",
@@ -18,31 +19,29 @@ class RevHelper
 
   def self.post(service, params)
     status = :ok
-    response = nil
+    conn = Faraday.new(BASE_URL)
 
-    agent = Mechanize.new
-    agent.cookie_jar.load("sessions/#{params[:token]}.yaml")
-    page = agent.post(URLS[service][:form], {
-      'tipoVeicolo' => params['tipoVeicolo'],
-      'targa' => params['targa'],
-      'captcha' => params['captcha'],
-      'ricercaCoperturaVeicolo' => 'Ricerca'
-    })
-    message = page.search('#elenco-1 .errore-desc').text
-    message = page.search('#elenco-1 .messaggio p').text if message.empty?
+    response = conn.post(URLS[:verify]) do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.body = {
+        id: params['token'],
+        text: params['captcha']
+      }.to_json
+    end
 
-    if message.empty?
-      k = page.search('table#listMovimenti thead tr th').map{ |th| th.text }
-      v = page.search('table#listMovimenti tbody tr td').map{ |th| th.text }
-      response = Hash[k.zip(v)]
-    else
+    guid = JSON.parse(response.body)['guid']
+    
+    if guid.nil?
       status = :ko
-      response = { message: message.strip }
+      message = "Errore captcha non valido"
+    else
+      response = conn.get(BASE_URL + URLS[:api] + "/#{params['tipoVeicolo']}/#{params['targa']}") do |req|
+        req.headers['guid'] = guid
+      end
+
+      message = JSON.parse(response.body)['informations']
     end
     
-    {
-      response: response,
-      status: status
-    }.to_json
+    { response: { message: }, status: }.to_json
   end
 end
